@@ -1,0 +1,16 @@
+%initalize dNdx
+B_e_T=sym('dNdx',[12,2],'real');
+%define dNdx by using the chain rule
+B_e_T(:,1) = diff(N(xi(1),xi(2)),xi(1))*invFisop(1,1) + ...
+diff(N(xi(1),xi(2)),xi(2))*invFisop(2,1);
+B_e_T(:,2) = diff(N(xi(1),xi(2)),xi(1))*invFisop(1,2) + ...
+diff(N(xi(1),xi(2)),xi(2))*invFisop(2,2);
+%now Bast can be be computed
+Bast(1,:) = diff(B_e_T(:,1),xi(1))*invFisop(1,1) + ...
+diff(B_e_T(:,1),xi(2))*invFisop(2,1);
+Bast(2,:) = diff(B_e_T(:,2),xi(1))*invFisop(1,2) + ...
+diff(B_e_T(:,2),xi(2))*invFisop(2,2);
+Bast(3,:) = 2*(diff(B_e_T(:,1),xi(1))*invFisop(1,2) + ...
+diff(B_e_T(:,1),xi(2))*invFisop(2,2));
+%and a function can be written
+matlabFunction(Bast, B_e_T,'File','Bast_kirchoff_func','Vars',{xi,xe1,xe2,xe3,xe4});
